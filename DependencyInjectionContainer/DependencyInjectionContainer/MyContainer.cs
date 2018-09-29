@@ -5,6 +5,7 @@ namespace DependencyInjectionContainer
     public class MyContainer
     {
         private Type objectType;
+        private object registeredObject;
 
         public MyContainer() { }
 
@@ -19,6 +20,7 @@ namespace DependencyInjectionContainer
             }
 
             objectType = c;
+            registeredObject = Activator.CreateInstance(objectType);
         }
 
         public object Resolve<Interface>()
@@ -28,9 +30,9 @@ namespace DependencyInjectionContainer
             if (!i.IsAssignableFrom(objectType))
             {
                 throw new ArgumentException($"{objectType.Name} does not implement {i.Name}");
-            }
+            }    
 
-            return Activator.CreateInstance(objectType);
+            return registeredObject;
         }
     }
 }
