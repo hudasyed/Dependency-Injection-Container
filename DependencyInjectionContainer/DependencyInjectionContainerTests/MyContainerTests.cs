@@ -1,5 +1,7 @@
 using DependencyInjectionContainer;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Xunit;
 
 namespace DependencyInjectionContainerTests
@@ -29,6 +31,19 @@ namespace DependencyInjectionContainerTests
             var instance2 = ioc.Resolve<IFoo>();
 
             Assert.True(instance1 == instance2);
+        }
+
+        [Fact]
+        public void when_registering_a_type_in_any_order_should_return_valid_resolve()
+        {
+            var ioc = new MyContainer(typeof(Foo));
+            List<object> instances = new List<object>();
+            for(int i = 0; i < 5; i++)
+            {
+                instances.Add(ioc.Resolve<IFoo>());
+            }
+
+            Assert.True(instances.TrueForAll(i => i.Equals(instances.FirstOrDefault())));
         }
     }
 }
