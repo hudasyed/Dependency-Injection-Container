@@ -13,8 +13,7 @@ namespace DependencyInjectionContainerTests
         [Fact]
         public void when_registering_a_type_should_return_an_instance_of_that_type()
         {
-            var ioc = new MyContainer();
-            ioc.Register<IFoo, Foo>();
+            var ioc = new MyContainer(typeof(Foo));
 
             var instance1 = ioc.Resolve<IFoo>();
 
@@ -24,8 +23,7 @@ namespace DependencyInjectionContainerTests
         [Fact]
         public void when_registered_a_type_resolve_should_return_the_same_instance_of_that_type()
         {
-            var ioc = new MyContainer();
-            ioc.Register<IFoo, Foo>();
+            var ioc = new MyContainer(typeof(Foo));
 
             var instance1 = ioc.Resolve<IFoo>();
             var instance2 = ioc.Resolve<IFoo>();

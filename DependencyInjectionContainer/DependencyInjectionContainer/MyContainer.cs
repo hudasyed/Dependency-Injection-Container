@@ -4,33 +4,21 @@ namespace DependencyInjectionContainer
 {
     public class MyContainer
     {
-        private Type objectType;
         private object registeredObject;
 
-        public MyContainer() { }
-
-        public void Register<Interface, Class>()
+        public MyContainer(Type ObjectType)
         {
-            Type i = typeof(Interface);
-            Type c = typeof(Class);
-
-            if (!i.IsAssignableFrom(c))
-            {
-                throw new ArgumentException($"{c.Name} does not implement {i.Name}");
-            }
-
-            objectType = c;
-            registeredObject = Activator.CreateInstance(objectType);
+            registeredObject = Activator.CreateInstance(ObjectType);
         }
 
         public object Resolve<Interface>()
         {
             Type i = typeof(Interface);
-
-            if (!i.IsAssignableFrom(objectType))
+            Type c = registeredObject.GetType();
+            if (!i.IsAssignableFrom(c))
             {
-                throw new ArgumentException($"{objectType.Name} does not implement {i.Name}");
-            }    
+                throw new ArgumentException($"{c.Name} does not implement {i.Name}");
+            }
 
             return registeredObject;
         }
